@@ -3,10 +3,12 @@
 
 , "author": "Myles Byrne"
 
-, "description": "A module-like packaging system for js and coffee that should run in the browser."
+, "description":
+  "A module-like packaging system for js and coffee that should run in the browser."
+
 , "keywords": [ "packaging", "browser", "module-system" ]
 
-, "main": "./lib/emport.js",
+, "main": "./lib/emport.js"
 
 , "engines": { "node": "~0.6" }
 , "dependencies":
