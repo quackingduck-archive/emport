@@ -1,0 +1,7 @@
+emport
+
+  A module-like packaging system for js and coffee that should run in the
+  browser.
+
+  This is an early alpha release. Use at your own risk etc. See examples
+  folder for usage example.

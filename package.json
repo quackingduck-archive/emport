@@ -1,0 +1,31 @@
+{ "name": "emport"
+, "version": "0.0.1"
+
+, "author": "Myles Byrne"
+
+, "description": "A module-like packaging system for js and coffee that should run in the browser."
+, "keywords": [ "packaging", "browser", "module-system" ]
+
+, "main": "./lib/emport.js",
+
+, "engines": { "node": "~0.6" }
+, "dependencies":
+  { "async": "~0.1.18"
+  , "glob": "~3.1.9"
+  }
+
+, "devDependencies":
+  { "coffee-script": "~1.2.0"
+  , "mocha": "~1.0.2"
+  }
+
+, "repository":
+  { "type": "git"
+  , "url": "git://github.com/quackingduck/emport.git"
+  }
+, "licenses": [
+  { "type": "MIT"
+  , "url": "https://github.com/quackingduck/wach/raw/emport/LICENSE"
+  }
+  ]
+}
