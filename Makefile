@@ -21,3 +21,8 @@ test/%_test.coffee-test : test/%_test.coffee
 	./node_modules/.bin/mocha \
 		--compilers coffee:coffee-script \
 		--ui qunit
+
+# ---
+
+tag:
+	git tag v`coffee -e "console.log JSON.parse(require('fs').readFileSync 'package.json').version"`
