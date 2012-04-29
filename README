@@ -1,5 +1,5 @@
 
-emport.js
+                               emport.js
 
   A module-like packaging system for javascript and coffeescript source files
   that target the browser.
@@ -7,7 +7,7 @@ emport.js
   This is an early beta release. Use at your own risk etc. See /examples
   folder for usage example.
 
----
+                                  ---
 
 Hey what about requirejs(.org) and AMD? Have you heard about those?! They do the thing that this thing does!
 
@@ -16,13 +16,13 @@ Hey what about requirejs(.org) and AMD? Have you heard about those?! They do the
   until "First thing to sort out is a script loading API"
   
   emport.js is the result of asking "what if we ditch the script loading
-  API?". We still want our individual javascript (or coffeescript) files to
-  look like modules. At the top of the file we want to see the interface the
-  module exports and what other modules it depends on. Those are good things.
-  And it's obviously a good idea to use that information to generate the Giant
-  Concatenated Source String that gets sent to down to browsers. But other
-  than that it should be browser-side programming just like the old days with
-  our old friend:
+  API?". We still want our individual javascript files to look like modules.
+  At the top of the file we want to see the interface the module exports and
+  what other modules it depends on. Those are good things. And it's obviously
+  a good idea to use that information to generate the Giant Concatenated
+  Source String that gets sent to down to browsers. But other than that it
+  should be browser-side programming just like the old days with our old
+  friend:
   
     (function(){
       
@@ -30,14 +30,15 @@ Hey what about requirejs(.org) and AMD? Have you heard about those?! They do the
       
     }).call(this);
 
-  ... he's done good by us. CoffeeScript users don't even have to type the
-  closure because CoffeeScript is also a good friend.
+  ... he's done good by us. Coffeescript users don't even have to type the
+  closure because coffeescript is javascript's best friend.
 
 
 What does it look like?
 
-  Here is an example (in CoffeeScript) source file header pulled from an app
-  running in production to show what using emport.js looks like in practice:
+  Here is an example (coffeescript) source file header pulled from an app
+  running in production that shows what using emport.js looks like in
+  practice:
   
     #@export GoalListView
 
@@ -57,7 +58,7 @@ What does it look like?
   delete the comments and your code is exactly how it used to be.
 
 
-Does emport throw an error when a module tries to access a global variable it has not imported?
+Does emport.js throw an error when a module tries to access a global variable it has not imported?
 
   Currently no, but that seems like the right direction to head.
 
@@ -69,8 +70,9 @@ on Rails? What's wrong with just assuming that every source file has access to a
   Yes. Modularization at the source file level is not every developer's cup of
   tea.
 
+                                  ---
 
-Some other projects that occupy the same general vicinity as emport that
+Some other projects that occupy the same general vicinity as emport.js that
 you may also be interested in:
 
   r.js - node.js based library and command line tool for packaging js source
