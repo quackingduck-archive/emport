@@ -1,4 +1,7 @@
-#@import $
 #@export Widget
+#@import Backbone
 
-this.Widget = {}
+class @Widget extends Backbone.View
+
+  initialize: ->
+    console.log "initializing widget ..."
