@@ -1,7 +1,82 @@
-emport
 
-  A module-like packaging system for js and coffee that should run in the
-  browser.
+emport.js
 
-  This is an early alpha release. Use at your own risk etc. See examples
+  A module-like packaging system for javascript and coffeescript source files
+  that target the browser.
+
+  This is an early beta release. Use at your own risk etc. See /examples
   folder for usage example.
+
+---
+
+Hey what about requirejs(.org) and AMD? Have you heard about those?! They do the thing that this thing does!
+
+  emport.js makes some different tradeoffs from require.js, from reading
+  http://requirejs.org/docs/why.html, we are in agreement with everything up
+  until "First thing to sort out is a script loading API"
+  
+  emport.js is the result of asking "what if we ditch the script loading
+  API?". We still want our individual javascript (or coffeescript) files to
+  look like modules. At the top of the file we want to see the interface the
+  module exports and what other modules it depends on. Those are good things.
+  And it's obviously a good idea to use that information to generate the Giant
+  Concatenated Source String that gets sent to down to browsers. But other
+  than that it should be browser-side programming just like the old days with
+  our old friend:
+  
+    (function(){
+      
+      this.MyModuleName = function() ...
+      
+    }).call(this);
+
+  ... he's done good by us. CoffeeScript users don't even have to type the
+  closure because CoffeeScript is also a good friend.
+
+
+What does it look like?
+
+  Here is an example (in CoffeeScript) source file header pulled from an app
+  running in production to show what using emport.js looks like in practice:
+  
+    #@export GoalListView
+
+    #@import Backbone
+    #@import $
+    #@import $.fn.chosen
+    #@import $.fn.sortable
+    #@import records
+    #@import goalListItemView
+
+    class @GoalListView extends Backbone.View
+      ... class implementation ...
+  
+  As you can see the import and export directives are just comments with a
+  specific syntax. If you decide to give up on modularizing your client-side
+  js and just go back to The Way It Was then nothing will break. You just
+  delete the comments and your code is exactly how it used to be.
+
+
+Does emport throw an error when a module tries to access a global variable it has not imported?
+
+  Currently no, but that seems like the right direction to head.
+
+
+Why would I want to put all these stupid boilerplate import and export
+comments everywhere?! This just seems like extra work! Haven't you used Ruby
+on Rails? What's wrong with just assuming that every source file has access to all the rest of the code in the project automatically?
+
+  Yes. Modularization at the source file level is not every developer's cup of
+  tea.
+
+
+Some other projects that occupy the same general vicinity as emport that
+you may also be interested in:
+
+  r.js - node.js based library and command line tool for packaging js source
+  files that use the requirejs module system
+  https://github.com/jrburke/r.js
+
+  Sprockets - Rack (Ruby) based, does dependency-aware concatenation of js
+  source files and many other things too. Built into Rails 3.1
+  https://github.com/sstephenson/sprockets
