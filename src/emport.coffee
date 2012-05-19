@@ -45,10 +45,10 @@ targetFilename is in.
 
 ###
 
-path = require 'path'
-fs = require 'fs'
-glob = require 'glob'
-async = require 'async'
+path   = require 'path'
+fs     = require 'fs'
+glob   = require 'glob'
+async  = require 'async'
 coffee = require 'coffee-script'
 
 module.exports = emport = (targetFilename, options, callback) ->
