@@ -52,32 +52,34 @@ async  = require 'async'
 coffee = require 'coffee-script'
 
 module.exports = emport = (targetFilename, options, callback) ->
-  basePath = options.path or path.dirname(targetFilename)
+  basePaths = options.paths or [path.dirname(targetFilename)]
 
   # data structure with entries like
   #   'filename': imports: [], exports: [], contents: "... file contents ..."
   emportMap = {}
 
-  async.waterfall [
+  async.forEachSeries basePaths, (basePath, cb) ->
+    async.waterfall [
 
-    # enumerate all paths
-    (cb) -> glob "#{basePath}/**/*.@(js|coffee)", cb
+      # enumerate all paths
+      (cb) -> glob "#{basePath}/**/*.@(js|coffee)", cb
 
-    (filenames, cb) ->
-      # parrallel process each file
-      async.forEach filenames, (filename, eachCb) ->
-        fs.readFile filename, 'utf8', (err, contents) ->
-          return eachCb() unless contents? # ignores directories
+      (filenames, cb) ->
+        # parrallel process each file
+        async.forEach filenames, (filename, eachCb) ->
+          fs.readFile filename, 'utf8', (err, contents) ->
+            return eachCb() unless contents? # ignores directories
 
-          relPath = path.relative basePath, filename
-          importsAndExports = parseSourceForImportsAndExports contents
-          emportMap[relPath] = importsAndExports
-          emportMap[relPath].contents = contents
+            relPath = path.relative basePath, filename
+            importsAndExports = parseSourceForImportsAndExports contents
+            emportMap[relPath] = importsAndExports
+            emportMap[relPath].contents = contents
 
-          eachCb()
-      , cb
+            eachCb()
+        , cb
 
-  ], (err) ->
+    ], cb
+  , (err) ->
     return callback(err) if err?
 
     # apply the map given in options over map produced from scanning files
