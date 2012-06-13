@@ -9,7 +9,8 @@
 
                                   ---
 
-Hey what about requirejs(.org) and AMD? Have you heard about those?! They do the thing that this thing does!
+Hey what about requirejs(.org) and AMD? Have you heard about those?! They do
+the thing that this thing does!
 
   emport.js makes some different tradeoffs from require.js, from reading
   http://requirejs.org/docs/why.html, we are in agreement with everything up
@@ -58,14 +59,16 @@ What does it look like?
   delete the comments and your code is exactly how it used to be.
 
 
-Does emport.js throw an error when a module tries to access a global variable it has not imported?
+Does emport.js throw an error when a module tries to access a global variable
+it has not imported?
 
   Currently no, but that seems like the right direction to head.
 
 
 Why would I want to put all these stupid boilerplate import and export
 comments everywhere?! This just seems like extra work! Haven't you used Ruby
-on Rails? What's wrong with just assuming that every source file has access to all the rest of the code in the project automatically?
+on Rails? What's wrong with just assuming that every source file has access to
+all the rest of the code in the project automatically?
 
   Yes. Modularization at the source file level is not every developer's cup of
   tea.
