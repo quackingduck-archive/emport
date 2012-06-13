@@ -2,7 +2,7 @@
 
 Example usage:
 
-    emport 'app.coffee', paths: [ 'frontend **/*.js' ], map:
+    emport 'app.coffee', paths: [ 'frontend' ], map:
       'vendor/jquery.js'      : exports: '$'
     , (err, js) ->
       throw err if err?
@@ -17,8 +17,8 @@ Here's a rough overview of what happens when `emport` is called:
 * If no base paths are provided - via the `paths` argument - the directory of
   the target file is used.
 * The base paths are scanned for all files matching the optional glob or
-  against the default glob: `**/*.@(js|coffee)` (all js and coffee files,
-  infinitely deep).
+  against the default glob pattern - all js and coffee files,
+  infinitely deep
 * All of the matched files are read into memory, in parallel
 * Each file is scanned for the special import and export comments
 * An `emportMap` data strcuture is built up containing:
