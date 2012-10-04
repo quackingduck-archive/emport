@@ -1,16 +1,16 @@
 { "name": "emport"
-, "version": "0.5.1"
+, "version": "0.5.2"
 
 , "author": "Myles Byrne"
 
 , "description":
-  "A module-like packaging system for js and coffee that should run in the browser."
+  "A module-like system for stiching together browser-side javascript (and coffeescript) files"
 
 , "keywords": [ "packaging", "browser", "module-system" ]
 
 , "main": "./lib/emport.js"
 
-, "engines": { "node": "~0.6" }
+, "engines": { "node": ">=0.6" }
 , "dependencies":
   { "async": "~0.1.18"
   , "glob": "~3.1.9"
