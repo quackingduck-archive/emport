@@ -113,7 +113,7 @@ module.exports = emport = (targetFilename, options, callback) ->
     contentsInOrder = for filename in filenamesInOrder
       contents = emportMap[filename].contents
       if filename.match /\.coffee$/
-        coffee.compile contents
+        coffee.compile contents, filename: filename
       else
         contents
 
