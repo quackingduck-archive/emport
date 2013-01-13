@@ -18,15 +18,15 @@ test "example/small-app", (done) ->
     // backbone
 
     (function() {
-      var __hasProp = Object.prototype.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+      var __hasProp = {}.hasOwnProperty,
+        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
       this.Widget = (function(_super) {
 
         __extends(Widget, _super);
 
         function Widget() {
-          Widget.__super__.constructor.apply(this, arguments);
+          return Widget.__super__.constructor.apply(this, arguments);
         }
 
         Widget.prototype.initialize = function() {
