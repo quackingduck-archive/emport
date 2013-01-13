@@ -1,6 +1,6 @@
 emport = require '../../src/emport'
 
-emport 'app.coffee', paths: [ 'frontend' ], map:
+emport 'app.coffee', paths: [ 'modules', 'frontend' ], map:
   'vendor/jquery.js'      : exports: '$'
   'vendor/underscore.js'  : exports: '_'
   'vendor/backbone.js'    : exports: 'Backbone', imports: ['_', '$']

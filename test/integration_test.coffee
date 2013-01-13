@@ -2,12 +2,14 @@ assert = require 'assert'
 emport = require '../src/emport'
 
 test "example/small-app", (done) ->
-  dir = __dirname + '/../examples/small-app/frontend'
+  dir = __dirname + '/../examples/small-app/'
   # optional glob filter provided
-  emport 'app.coffee', paths: [ dir + ' **/*.@(js|coffee)' ], map:
-    'vendor/jquery.js'      : exports: '$'
-    'vendor/underscore.js'  : exports: '_'
-    'vendor/backbone.js'    : exports: 'Backbone', imports: '_'
+  emport 'app.coffee',
+    paths: [ dir+'modules/foo', dir+'modules/bar',dir+'frontend' ],
+    map:
+      'vendor/jquery.js'      : exports: '$'
+      'vendor/underscore.js'  : exports: '_'
+      'vendor/backbone.js'    : exports: 'Backbone', imports: ['_', '$']
   , (err, js) ->
     throw err if err?
     assert.equal js, """
