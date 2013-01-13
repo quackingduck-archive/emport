@@ -105,7 +105,7 @@ module.exports = emport = (targetFilename, options, callback) ->
     for filename, importsAndExports of emportMap
       dependencies[filename] =
         for importVar in importsAndExports.imports
-          exports[importVar] ? throw new Error "no file exports #{importVar}"
+          exports[importVar] ? throw new Error "no file exports #{importVar}, called from #{filename}"
 
     filenamesInOrder = resolveDeps targetFilename, dependencies
     filenamesInOrder.push targetFilename
