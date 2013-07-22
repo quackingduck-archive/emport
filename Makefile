@@ -1,13 +1,24 @@
-COFFEE = $(shell find "src" -name "*.coffee")
-JS = $(COFFEE:src%.coffee=lib%.js)
+SRC = $(shell find src -name "*.coffee" -type f | sort)
+LIB = $(SRC:src/%.coffee=lib/%.js)
 
-all: $(JS)
+COFFEE=node_modules/.bin/coffee
+all: clean setup build test
 
-lib/%.js : src/%.coffee
-	./node_modules/.bin/coffee \
-		--compile \
-		--lint \
-		--output lib $<
+build: $(LIB)
+
+lib:
+	mkdir lib
+
+lib/%.js: src/%.coffee lib
+	dirname "$@" | xargs mkdir -p
+	$(COFFEE) --js <"$<" >"$@"
+
+clean:
+	rm -rf lib
+	rm -rf node_modules
+
+setup:
+	npm install
 
 # To a single test append '-test' to the filename:
 #		make test/foo_test.coffee-test
@@ -15,11 +26,11 @@ lib/%.js : src/%.coffee
 TEST_FILES = $(shell find "test" -name "*_test.coffee")
 TESTS = $(TEST_FILES:%=%-test)
 
-test : $(TESTS)
+test : build $(TESTS)
 
 test/%_test.coffee-test : test/%_test.coffee
 	./node_modules/.bin/mocha \
-		--compilers coffee:coffee-script \
+		--compilers coffee:coffee-script-redux/register \
 		--ui qunit
 
 # ---
