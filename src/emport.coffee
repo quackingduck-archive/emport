@@ -50,7 +50,7 @@ path   = require 'path'
 fs     = require 'fs'
 glob   = require 'glob'
 async  = require 'async'
-coffee = require 'coffee-script'
+coffee = require 'coffee-script-redux'
 
 module.exports = emport = (targetFilename, options, callback) ->
   basePaths = options.paths or [path.dirname(targetFilename)]
@@ -59,7 +59,7 @@ module.exports = emport = (targetFilename, options, callback) ->
   #   'filename': imports: [], exports: [], contents: "... file contents ..."
   emportMap = {}
 
-  async.forEachSeries basePaths, (basePath, cb) ->
+  async.forEachSeries basePaths, ((basePath, cb) ->
     async.waterfall [
 
       # enumerate all paths
@@ -70,7 +70,7 @@ module.exports = emport = (targetFilename, options, callback) ->
 
       (filenames, cb) ->
         # parrallel process each file
-        async.forEach filenames, (filename, eachCb) ->
+        async.forEach filenames, ((filename, eachCb) ->
           fs.readFile filename, 'utf8', (err, contents) ->
             return eachCb() unless contents? # ignores directories
 
@@ -80,10 +80,10 @@ module.exports = emport = (targetFilename, options, callback) ->
             emportMap[relPath].contents = contents
 
             eachCb()
-        , cb
+        ), cb
 
     ], cb
-  , (err) ->
+  ), (err) ->
     return callback(err) if err?
 
     # apply the map given in options over map produced from scanning files
@@ -105,7 +105,7 @@ module.exports = emport = (targetFilename, options, callback) ->
     for filename, importsAndExports of emportMap
       dependencies[filename] =
         for importVar in importsAndExports.imports
-          exports[importVar] ? throw new Error "no file exports #{importVar}"
+          exports[importVar] ? (throw new Error "no file exports #{importVar}")
 
     filenamesInOrder = resolveDeps targetFilename, dependencies
     filenamesInOrder.push targetFilename
@@ -113,7 +113,7 @@ module.exports = emport = (targetFilename, options, callback) ->
     contentsInOrder = for filename in filenamesInOrder
       contents = emportMap[filename].contents
       if filename.match /\.coffee$/
-        coffee.compile contents, filename: filename
+        coffee.cs2js contents, filename: filename
       else
         contents
 
