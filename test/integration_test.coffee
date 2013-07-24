@@ -1,17 +1,32 @@
 assert = require 'assert'
 emport = require '../src/emport'
 
-test "example/small-app", (done) ->
-  dir = __dirname + '/../examples/small-app/frontend'
-  # optional glob filter provided
-  map =
-    'vendor/jquery.js':
-      exports: '$'
-    'vendor/underscore.js':
-      exports: '_'
-    'vendor/backbone.js':
-      exports: 'Backbone', imports: '_'
-  emport 'app.coffee', {map, paths: [ dir + ' **/*.@(js|coffee)' ]}, (err, js) ->
+dir = "#{__dirname}/../examples/small-app/frontend"
+# optional glob filter provided
+map =
+  'vendor/backbone.js':
+    exports: 'Backbone', imports: '_'
+  'vendor/underscore.js':
+    exports: '_'
+  'vendor/jquery.js':
+    exports: '$'
+
+paths = [ "#{dir} **/*.@(js|coffee)" ]
+
+test 'example/small-app inclusion-order', (done) ->
+  emport 'app.coffee', {map, paths, output: 'filenames'}, (err, paths) ->
+    throw err if err?
+    assert.deepEqual [
+      'vendor/jquery.js'
+      'vendor/underscore.js'
+      'vendor/backbone.js'
+      'widget.coffee'
+      'app.coffee'
+    ], paths, 'filenames output produces the script inclusion order'
+    done()
+
+test 'example/small-app', (done) ->
+  emport 'app.coffee', {map, paths}, (err, js) ->
     throw err if err?
     assert.equal js, """// jquery
 

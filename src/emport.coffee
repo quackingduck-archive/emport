@@ -110,6 +110,8 @@ module.exports = emport = (targetFilename, options, callback) ->
     filenamesInOrder = resolveDeps targetFilename, dependencies
     filenamesInOrder.push targetFilename
 
+    return callback null, filenamesInOrder  if options.output is 'filenames'
+
     contentsInOrder = for filename in filenamesInOrder
       contents = emportMap[filename].contents
       if filename.match /\.coffee$/
