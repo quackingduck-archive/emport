@@ -35,5 +35,7 @@ test/%_test.coffee-test : test/%_test.coffee
 
 # ---
 
+VERSION_NUMBER = $(shell cat package.json | grep version | cut -d ' ' -f 3 | xargs)
+
 tag:
-	git tag v`coffee -e "console.log JSON.parse(require('fs').readFileSync 'package.json').version"`
+	git tag v$(VERSION_NUMBER)
