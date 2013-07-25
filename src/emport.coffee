@@ -113,7 +113,11 @@ module.exports = emport = (targetFilename, options, callback) ->
     contentsInOrder = for filename in filenamesInOrder
       contents = emportMap[filename].contents
       if filename.match /\.coffee$/
-        coffee.cs2js contents, filename: filename
+        try
+          coffee.cs2js contents, filename: filename
+        catch e
+          console.error "Failed to compile #{filename}"
+          throw e
       else
         contents
 
