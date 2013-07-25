@@ -110,17 +110,10 @@ module.exports = emport = (targetFilename, options, callback) ->
     filenamesInOrder = resolveDeps targetFilename, dependencies
     filenamesInOrder.push targetFilename
 
-    contentsInOrder = for filename in filenamesInOrder
-      contents = emportMap[filename].contents
-      if filename.match /\.coffee$/
-        try
-          coffee.cs2js contents, filename: filename
-        catch e
-          console.error "Failed to compile #{filename}"
-          throw e
-      else
-        contents
-
+    try
+      contentsInOrder = getContentsInOrder filenamesInOrder, emportMap
+    catch e
+      return callback e
     callback null, contentsInOrder.join "\n"
 
 
@@ -150,3 +143,17 @@ expandMapShorthand = (inputMap) ->
     for k in ['imports', 'exports']
       h[k] ?= []
       h[k] = [h[k]] if typeof h[k] is 'string'
+
+
+getContentsInOrder = (filenamesInOrder, emportMap) ->
+  for filename in filenamesInOrder
+    contents = emportMap[filename].contents
+    if filename.match /\.coffee$/
+      try
+        coffee.cs2js contents, filename: filename
+      catch e
+        e.message += "\n when processing #{filename}"
+        throw e
+    else
+      contents
+
