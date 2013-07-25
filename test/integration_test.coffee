@@ -77,3 +77,19 @@ function extends$(child, parent) {
 }
     """
     done()
+
+
+
+test "example/small-app-with-error", (done) ->
+  dir = __dirname + '/../examples/small-app/frontend'
+  # optional glob filter provided
+  map =
+    'vendor/jquery.js':
+      exports: '$'
+    'vendor/underscore.js':
+      exports: '_'
+    'vendor/backbone.js':
+      exports: 'Backbone', imports: '_'
+  emport 'app-using-error-widget.coffee', {map, paths: [ dir + ' **/*.@(js|coffee)' ]}, (err, js) ->
+    assert err.message.match "when processing widget-with-syntax-error.coffee"
+    done()
