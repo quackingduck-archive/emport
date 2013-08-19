@@ -72,7 +72,7 @@ module.exports = emport = (targetFilename, options, callback) ->
         # parrallel process each file
         async.forEach filenames, (filename, eachCb) ->
           fs.readFile filename, 'utf8', (err, contents) ->
-            return eachCb() unless contents? # ignores directories
+            return eachCb err if err
 
             relPath = path.relative basePath, filename
             importsAndExports = parseSourceForImportsAndExports contents
