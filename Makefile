@@ -6,7 +6,6 @@ all: $(JS)
 lib/%.js : src/%.coffee
 	./node_modules/.bin/coffee \
 		--compile \
-		--lint \
 		--output lib $<
 
 # To a single test append '-test' to the filename:
