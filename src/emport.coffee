@@ -150,7 +150,7 @@ getContentsInOrder = (filenamesInOrder, emportMap, optimize) ->
     contents = emportMap[filename].contents
     if filename.match /\.coffee$/
       try
-        coffee.cs2js contents, filename: filename, optimize: optimize ? yes
+        coffee.cs2js contents, filename: filename, optimise: optimize ? yes
       catch e
         e.message += "\n when processing #{filename}"
         throw e
