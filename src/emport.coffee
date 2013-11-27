@@ -111,7 +111,7 @@ module.exports = emport = (targetFilename, options, callback) ->
     filenamesInOrder.push targetFilename
 
     try
-      contentsInOrder = getContentsInOrder filenamesInOrder, emportMap
+      contentsInOrder = getContentsInOrder filenamesInOrder, emportMap, options.optimize
     catch e
       return callback e
     callback null, contentsInOrder.join "\n"
@@ -145,12 +145,12 @@ expandMapShorthand = (inputMap) ->
       h[k] = [h[k]] if typeof h[k] is 'string'
 
 
-getContentsInOrder = (filenamesInOrder, emportMap) ->
+getContentsInOrder = (filenamesInOrder, emportMap, optimize) ->
   for filename in filenamesInOrder
     contents = emportMap[filename].contents
     if filename.match /\.coffee$/
       try
-        coffee.cs2js contents, filename: filename
+        coffee.cs2js contents, filename: filename, optimise: optimize ? yes
       catch e
         e.message += "\n when processing #{filename}"
         throw e

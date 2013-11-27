@@ -17,7 +17,7 @@
   }
 
 , "devDependencies":
-  { "coffee-script-redux": "~2.0.0-beta6"
+  { "coffee-script-redux": "2.0.0-beta7"
   , "mocha": "~1.8.1"
   }
 
