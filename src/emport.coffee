@@ -164,8 +164,7 @@ getContentsInOrder = (filenamesInOrder, emportMap, optimize, basePath, buildPath
         if originalFilename.indexOf(basePath) isnt 0
           throw new Error "Unable to determine coffeescript build directory: #{originalFilename}"
 
-        # from: /home/foo/bar/zip/tim.pop to: /home/foo/build/bar_zip_tim.pop
-        # (if basePath == '/home/foo' and buildPath == 'build')
+        # The unique file, named something like /home/code/project/build/a2e090cf4fc704c585285943860e2e920a06d830.coffee
         builtFile = path.join buildPath, "#{contentsHash}.coffee"
 
         if fs.existsSync builtFile
