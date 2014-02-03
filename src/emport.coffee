@@ -51,9 +51,11 @@ fs     = require 'fs'
 glob   = require 'glob'
 async  = require 'async'
 coffee = require 'coffee-script-redux'
+crypto = require 'crypto'
 
 module.exports = emport = (targetFilename, options, callback) ->
   basePaths = options.paths or [path.dirname(targetFilename)]
+  buildPath = path.join(options.basePath, options.build || 'build')
 
   # data structure with entries like
   #   'filename': imports: [], exports: [], contents: "... file contents ..."
@@ -78,6 +80,7 @@ module.exports = emport = (targetFilename, options, callback) ->
             importsAndExports = parseSourceForImportsAndExports contents
             emportMap[relPath] = importsAndExports
             emportMap[relPath].contents = contents
+            emportMap[relPath].filename = filename
 
             eachCb()
         ), cb
@@ -111,7 +114,7 @@ module.exports = emport = (targetFilename, options, callback) ->
     filenamesInOrder.push targetFilename
 
     try
-      contentsInOrder = getContentsInOrder filenamesInOrder, emportMap, options.optimize
+      contentsInOrder = getContentsInOrder filenamesInOrder, emportMap, options.optimize, options.basePath, buildPath
     catch e
       return callback e
     callback null, contentsInOrder.join "\n"
@@ -145,15 +148,37 @@ expandMapShorthand = (inputMap) ->
       h[k] = [h[k]] if typeof h[k] is 'string'
 
 
-getContentsInOrder = (filenamesInOrder, emportMap, optimize) ->
+getContentsInOrder = (filenamesInOrder, emportMap, optimize, basePath, buildPath) ->
   for filename in filenamesInOrder
     contents = emportMap[filename].contents
+    originalFilename = emportMap[filename].filename
     if filename.match /\.coffee$/
       try
-        coffee.cs2js contents, filename: filename, optimise: optimize ? yes
+        coffeeopts = filename: filename, optimise: optimize ? yes
+
+        # Unique hash describing these contents
+        contentsHash = crypto.createHash('sha1')
+          .update("#{contents}#{JSON.stringify coffeeopts}")
+          .digest('hex')
+
+        if originalFilename.indexOf(basePath) isnt 0
+          throw new Error "Unable to determine coffeescript build directory: #{originalFilename}"
+
+        # from: /home/foo/bar/zip/tim.pop to: /home/foo/build/bar_zip_tim.pop
+        # (if basePath == '/home/foo' and buildPath == 'build')
+        builtFile = path.join buildPath, "#{contentsHash}.coffee"
+
+        if fs.existsSync builtFile
+          # We've found an existing copy of this exact source file, so use that
+          # instead of recompiling
+          return fs.readFileSync  builtFile
+        else
+          contents = coffee.cs2js contents, coffeeopts
+          # Now that the file is compiled, save out a copy
+          fs.writeFileSync builtFile, contents
+          return contents
       catch e
         e.message += "\n when processing #{filename}"
         throw e
     else
       contents
-
